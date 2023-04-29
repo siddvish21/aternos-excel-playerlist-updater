@@ -1,6 +1,7 @@
 from python_aternos import Client
 import os
 import openpyxl
+import csv
 import datetime
 from time import sleep
 from pytz import timezone
@@ -27,6 +28,13 @@ def check_player():
   servers = api.list_servers()
   server = servers[2]
   orgi_player_list = set(server.players_list)
+  wb = openpyxl.load_workbook('server-player-list.xlsx')
+  sheet = wb.active
+  sheet["A1"] = "Player name"
+  sheet["B1"] = "Leave/Join"
+  sheet["C1"]="Time"
+  filename = 'aternos-player-list.csv'
+  header=['Player Name','Leave/Join','Time']
   while True:
     sleep(10)
     server.fetch()
@@ -39,15 +47,15 @@ def check_player():
       playername.append(''.join(new_players))
       leave_join.append('Joined')
       orgi_player_list = current_player_list
-      data = list(zip(playername, leave_join, time))
-      wb = openpyxl.load_workbook('server-player-list.xlsx')
-      sheet = wb.active
-      sheet["A1"] = "Player name"
-      sheet["B1"] = "Leave/Join"
-      sheet["C1"]="Time"
+      data = list(zip(playername, leave_join, time))  
       for row in data:
         sheet.append(row)
-      wb.save('server1.xlsx')
+      wb.save('server-player-list.xlsx')
+      with open(filename, 'w', newline="") as file:
+        csvwriter = csv.writer(file) 
+        csvwriter.writerow(header) 
+        csvwriter.writerows(data) 
+      
     elif left_players:
       print(f'Player left: {left_players} at {currentTime()}')
       time.append(currentTime())
@@ -55,11 +63,15 @@ def check_player():
       leave_join.append('Left')
       orgi_player_list = current_player_list
       data = list(zip(playername, leave_join, time))
-      wb = openpyxl.load_workbook('server1.xlsx')
-      sheet = wb.active
       sheet.append(('playername', 'Leave/Join', 'Time'))
       for row in data:
         sheet.append(row)
-        wb.save('server-player-list.xlsx')
+
+      wb.save('server-player-list.xlsx')
+      
+      with open(filename, 'w', newline="") as file:
+        csvwriter = csv.writer(file)  
+        csvwriter.writerows(data)
+    
 
 check_player()
