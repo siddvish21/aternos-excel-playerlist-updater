@@ -32,9 +32,6 @@ The script will continuously monitor the player list on the Aternos Minecraft se
 - Leave/Join
 - Time
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
