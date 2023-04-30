@@ -21,7 +21,8 @@ To use this script, you will need:
 4. Create a new virtual environment by running `python3 -m venv <Your virtual environment name>`
 5. Activate the virtual environment by running `<Your virtual environment name>\Scripts\activate` (Windows) or `source env/bin/activate` (macOS/Linux)
 6. Install the dependencies by running `pip install -r requirements.txt`
-7. Update the Aternos credentials and Excel sheet name in the file
+7. Rename the `.env.sample` file  to `.env`
+8. Update the Aternos credentials in the `.env` file
 8. Run the script using `python main.py`
 
 ## Usage
