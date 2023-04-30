@@ -1,6 +1,7 @@
 from python_aternos import Client
 import os
 import openpyxl
+import csv
 import datetime
 from time import sleep
 from pytz import timezone
@@ -14,6 +15,26 @@ def currentTime():
     date = datetime.datetime.now(tz)
     return date.strftime("%d-%m-%Y %H:%M:%S")
 
+
+def data_to_sheet(data):
+  wb = openpyxl.load_workbook('server-player-list.xlsx')
+  sheet = wb.active
+  sheet["A1"] = "Player name"
+  sheet["B1"] = "Leave/Join"
+  sheet["C1"]="Time"
+
+  for row in data:
+    sheet.append(row)
+    wb.save('server-player-list.xlsx')
+    
+
+def data_to_csv(data):
+  filename = 'aternos-player-list.csv'
+  header=['Player Name','Leave/Join','Time']
+  csvwriter.writerow(header) 
+  with open(filename, 'w', newline="") as file:
+    csvwriter = csv.writer(file) 
+    csvwriter.writerows(data) 
 
 def check_player():
   
@@ -39,15 +60,9 @@ def check_player():
       playername.append(''.join(new_players))
       leave_join.append('Joined')
       orgi_player_list = current_player_list
-      data = list(zip(playername, leave_join, time))
-      wb = openpyxl.load_workbook('server-player-list.xlsx')
-      sheet = wb.active
-      sheet["A1"] = "Player name"
-      sheet["B1"] = "Leave/Join"
-      sheet["C1"]="Time"
-      for row in data:
-        sheet.append(row)
-      wb.save('server1.xlsx')
+      data = list(zip(playername, leave_join, time))  
+      data_to_sheet(data)
+      data_to_csv(data)
     elif left_players:
       print(f'Player left: {left_players} at {currentTime()}')
       time.append(currentTime())
@@ -55,11 +70,7 @@ def check_player():
       leave_join.append('Left')
       orgi_player_list = current_player_list
       data = list(zip(playername, leave_join, time))
-      wb = openpyxl.load_workbook('server1.xlsx')
-      sheet = wb.active
-      sheet.append(('playername', 'Leave/Join', 'Time'))
-      for row in data:
-        sheet.append(row)
-        wb.save('server-player-list.xlsx')
+      data_to_sheet(data)
+      data_to_csv(data)
 
 check_player()
