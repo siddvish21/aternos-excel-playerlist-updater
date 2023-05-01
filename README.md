@@ -15,7 +15,7 @@ To use this script, you will need:
 
 ## Installation
 
-1. Clone this repository using `git clone https://github.com/siddvish21/minecraft-player-list-tracker.git`
+1. Clone this repository using `git clone https://github.com/siddvish21/aternos-excel-playerlist-updater.git`
 2. Navigate to the cloned repository using `cd minecraft-player-list-tracker`
 3. Install virtualenv using `pip install virtualenv`
 4. Create a new virtual environment by running `python3 -m venv <Your virtual environment name>`
