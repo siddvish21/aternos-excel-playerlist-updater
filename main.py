@@ -6,18 +6,19 @@ import datetime
 from time import sleep
 from pytz import timezone
 from dotenv import load_dotenv
+from daily_report import alert_check_time
 
 load_dotenv()
 
 def currentTime():
-    #Change the timezone according to yours
+    
     tz = timezone("Asia/Kolkata")
     date = datetime.datetime.now(tz)
     return date.strftime("%d-%m-%Y %H:%M:%S")
 
 
 def data_to_sheet(data):
-  excel_filename='server-player-list.xlsx'
+  excel_filename='resources/server-player-list.xlsx'
   wb = openpyxl.load_workbook(excel_filename)
   sheet = wb.active
   sheet["A1"] = "Player name"
@@ -36,13 +37,12 @@ def append_data(new_player,status):
   playername.append(''.join(new_player))
   leave_join.append(status)
   data = list(zip(playername, leave_join, time))  
-  print(data)
   data_to_sheet(data)
   data_to_csv(data)
 
 
 def data_to_csv(data):
-    csv_filename = 'aternos-player-list.csv'
+    csv_filename = 'resources/aternos-player-list.csv'
     header = ['Player Name', 'Leave/Join', 'Time']
 
     file_exists = os.path.isfile(csv_filename)
@@ -81,4 +81,6 @@ def check_player():
       append_data(left_player,'Left')
       orgi_player_list = current_player_list
 
+alert_check_time()
 check_player()
+
